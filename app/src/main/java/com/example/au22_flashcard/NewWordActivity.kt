@@ -16,10 +16,11 @@ class NewWordActivity : AppCompatActivity(), CoroutineScope {
     var currentWord : Word? = null
    // val wordList = WordList()
     lateinit var word : Word
+    private lateinit var job : Job
     lateinit var db : AppDatabase
     lateinit var saveNewWordButton : Button
     lateinit var startQuizActivityButton : Button
-    private lateinit var job : Job
+
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
