@@ -8,27 +8,31 @@ import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
 import kotlinx.coroutines.Deferred
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
 import androidx.room.Room
 import kotlinx.coroutines.*
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 
-class QuizActivity : AppCompatActivity() {
+class QuizActivity : AppCompatActivity(), CoroutineScope  {
 
     lateinit var wordView : TextView
     var currentWord : Word? = null
     val wordList = WordList()
-    lateinit var db : AppDatabase
+    private lateinit var db : AppDatabase
     lateinit var startWordActivityButton: Button
+
+    private lateinit var job : Job
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main + job
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
+        job = Job()
 
         db = AppDatabase.getInstance(this)
 
@@ -46,7 +50,6 @@ class QuizActivity : AppCompatActivity() {
         }
 
         val list = loadAllWords()
-
 
         launch {
             val wordList = list.await()

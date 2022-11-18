@@ -18,6 +18,7 @@ class WordList() {
         wordList.add(Word(2,"Thank you", "Tack"))
         wordList.add(Word(3,"Welcome", "Välkommen"))
         wordList.add(Word(4,"Computer", "Dator"))
+        wordList.add(Word(4,"Aeroplane", "Flygplan"))
 
     }
 

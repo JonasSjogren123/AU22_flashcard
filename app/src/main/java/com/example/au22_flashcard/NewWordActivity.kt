@@ -3,15 +3,10 @@ package com.example.au22_flashcard
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import androidx.room.Room
 import kotlinx.coroutines.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class NewWordActivity : AppCompatActivity(), CoroutineScope {
@@ -38,10 +33,6 @@ class NewWordActivity : AppCompatActivity(), CoroutineScope {
             "words")
             .fallbackToDestructiveMigration()
             .build()
-
-        val word1 = Word(0,"fruit", "frukt")
-        val word2 = Word(0,"fridge", "kyl")
-        val word3 = Word(0,"cheese", "ost")
 
         newWordSwedishView = findViewById(R.id.newWordSwedishEditTextView)
         newWordEnglishView = findViewById(R.id.newWordEnglishEditTextView)
