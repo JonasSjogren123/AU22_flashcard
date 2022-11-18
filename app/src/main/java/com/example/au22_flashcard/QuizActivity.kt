@@ -21,7 +21,8 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
 
     lateinit var wordView : TextView
     var currentWord : Word? = null
-    val wordList = WordList()
+    private val wordList = mutableListOf<Word>()
+    private val usedWords = mutableListOf<Word>()
     private lateinit var db : AppDatabase
     lateinit var startWordActivityButton: Button
 
@@ -32,6 +33,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quiz)
+        wordList.clear()
         job = Job()
 
         db = AppDatabase.getInstance(this)
@@ -39,7 +41,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
         wordView = findViewById(R.id.wordTextView)
         startWordActivityButton = findViewById(R.id.startWordActivityButton)
 
-        showNewWord()
+       showNewWord()
 
         wordView.setOnClickListener {
             revealTranslation()
@@ -49,18 +51,19 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
             startNewWordActivity()
         }
 
-        val list = loadAllWords()
-
         launch {
-            val wordList = list.await()
+            val newWordList = loadAllWords()
+            val wordList = newWordList.await()
+            addNewWord(wordList)
 
             // vilken kod vi vill och här har vi vår lista som vi är vana vid
             //start
+            //wordList.....????
             for(word in wordList) {
-                Log.d("!!!!!!!!","word:$word")
+
+                Log.d("!!!!!!!1","word:$word")
             }
         }
-
     }
 
     fun revealTranslation() {
@@ -69,11 +72,9 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
 
 
     fun showNewWord() {
-
-        currentWord = wordList.getNewWord()
+        currentWord = getNewWord()
         wordView.text = currentWord?.swedish
     }
-
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
 
@@ -94,6 +95,31 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
         async(Dispatchers.IO) {
             db.wordDao().getAllWords()
         }
+
+    fun addNewWord(list:List<Word>){
+        for (word in list) {
+            wordList.add(word)
+        }
+    }
+
+    fun getNewWord() : Word {
+        if (wordList.size == usedWords.size) {
+            usedWords.clear()
+        }
+
+        var word : Word? = null
+
+        do {
+            val rnd = (0 until wordList.size).random()
+            word = wordList[rnd]
+        } while(usedWords.contains(word))
+
+
+
+        usedWords.add(word!!)
+
+        return word
+    }
 
 }
 
