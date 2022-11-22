@@ -29,12 +29,7 @@ class NewWordActivity : AppCompatActivity(), CoroutineScope {
         setContentView(R.layout.activity_new_word)
         job = Job()
 
-        db = Room.databaseBuilder(applicationContext,
-            AppDatabase::class.java,
-            "words")
-            .fallbackToDestructiveMigration()
-            .build()
-
+        db = AppDatabase.getInstance(this)
         newWordSwedishView = findViewById(R.id.newWordSwedishEditTextView)
         newWordEnglishView = findViewById(R.id.newWordEnglishEditTextView)
         saveNewWordButton = findViewById(R.id.saveNewWordButton)
