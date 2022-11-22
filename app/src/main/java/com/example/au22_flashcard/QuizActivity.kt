@@ -41,7 +41,7 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
         wordView = findViewById(R.id.wordTextView)
         startWordActivityButton = findViewById(R.id.startWordActivityButton)
 
-       showNewWord()
+       //showNewWord()
 
         wordView.setOnClickListener {
             revealTranslation()
@@ -53,9 +53,11 @@ class QuizActivity : AppCompatActivity(), CoroutineScope  {
 
         launch {
             val newWordList = loadAllWords()
-            val wordList = newWordList.await()
-            addNewWord(wordList)
+            val wordListt = newWordList.await()
+            addNewWord(wordListt)
 
+           // Log.d("!!!", "lokal: ${wordListt.size} class: ${wordList.size}")
+            showNewWord()
             // vilken kod vi vill och här har vi vår lista som vi är vana vid
             //start
             //wordList.....????
